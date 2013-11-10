@@ -4,23 +4,24 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.math.BigInteger;
 
-import net.minecraft.server.NBTBase;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.NBTTagList;
+import net.minecraft.server.v1_4_R1.NBTBase;
+import net.minecraft.server.v1_4_R1.NBTTagCompound;
+import net.minecraft.server.v1_4_R1.NBTTagList;
 
-import org.bukkit.craftbukkit.inventory.CraftInventoryCustom;
-import org.bukkit.craftbukkit.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_4_R1.inventory.CraftInventoryCustom;
+import org.bukkit.craftbukkit.v1_4_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.fatecrafters.plugins.RBInterface;
 import org.fatecrafters.plugins.RealisticBackpacks;
+import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
-public class preVersioning implements RBInterface {
+public class v1_4_R1 implements RBInterface {
 
 	RealisticBackpacks plugin;
 
-	public preVersioning(final RealisticBackpacks rb) {
+	public v1_4_R1(final RealisticBackpacks rb) {
 		this.plugin = rb;
 	}
 
@@ -36,32 +37,53 @@ public class preVersioning implements RBInterface {
 			if (is instanceof CraftItemStack) {
 				craft = (CraftItemStack) is;
 			} else if (is != null) {
-				craft = new CraftItemStack(is);
+				craft = CraftItemStack.asCraftCopy(is);
 			} else {
 				craft = null;
 			}
 			if (craft != null) {
-				craft.getHandle().save(outputObject);
+				CraftItemStack.asNMSCopy(craft).save(outputObject);
 			}
 			itemList.add(outputObject);
 		}
 		NBTBase.a(itemList, dataOutput);
-		return new BigInteger(1, outputStream.toByteArray()).toString(32);
+		return Base64Coder.encodeLines(outputStream.toByteArray());
 	}
 
 	@Override
 	public Inventory stringToInventory(final String data, final String name) {
-		final ByteArrayInputStream inputStream = new ByteArrayInputStream(new BigInteger(data, 32).toByteArray());
+		final ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
 		final NBTTagList itemList = (NBTTagList) NBTBase.b(new DataInputStream(inputStream));
 		final Inventory inventory = new CraftInventoryCustom(null, itemList.size());
 
 		for (int i = 0; i < itemList.size(); i++) {
 			final NBTTagCompound inputObject = (NBTTagCompound) itemList.get(i);
-			if (!inputObject.d()) {
-				inventory.setItem(i, new CraftItemStack(net.minecraft.server.ItemStack.a(inputObject)));
+			if (!inputObject.isEmpty()) {
+				inventory.setItem(i, CraftItemStack.asCraftMirror(net.minecraft.server.v1_4_R1.ItemStack.createStack(inputObject)));
 			}
 		}
 		return inventory;
+	}
+
+	@Override
+	public ItemStack addGlow(ItemStack item) {
+		net.minecraft.server.v1_4_R1.ItemStack handle = CraftItemStack.asNMSCopy(item);
+
+		if (handle == null) {
+			return item;
+		}
+
+		if (handle.tag == null) {
+			handle.tag = new NBTTagCompound();
+		}
+
+		NBTTagList tag = handle.getEnchantments();
+		if (tag == null) {
+			tag = new NBTTagList("ench");
+			handle.tag.set("ench", tag);
+		}
+
+		return CraftItemStack.asCraftMirror(handle);
 	}
 
 }
