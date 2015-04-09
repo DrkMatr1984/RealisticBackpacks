@@ -35,7 +35,6 @@ public class InventoryListener implements Listener {
 		final Inventory inv = e.getView().getTopInventory();
 		if (plugin.playerData.containsKey(name)) {
 			plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-				@Override
 				public void run() {
 					if (plugin.isUsingMysql()) {
 						try {
@@ -59,7 +58,6 @@ public class InventoryListener implements Listener {
 			});
 		} else if (plugin.adminFullView.containsKey(name)) {
 			plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-				@Override
 				public void run() {
 					final String[] split = plugin.adminFullView.get(name).split(":");
 					if (plugin.isUsingMysql()) {

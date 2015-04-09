@@ -123,14 +123,12 @@ public class PlayerListener implements Listener {
 		final String name = p.getName();
 		final ItemStack item = e.getItemDrop().getItemStack();
 		plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-			@Override
 			public void run() {
 				if (plugin.slowedPlayers.contains(name)) {
 					for (final String backpack : plugin.backpacks) {
 						if (plugin.backpackItems.get(backpack).equals(item)) {
 							plugin.slowedPlayers.remove(name);
 							plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
-								@Override
 								public void run() {
 									p.setWalkSpeed(0.2F);
 								}
@@ -149,7 +147,6 @@ public class PlayerListener implements Listener {
 		final Player p = e.getPlayer();
 		final String name = p.getName();
 		plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-			@Override
 			public void run() {
 				for (final String backpack : plugin.backpacks) {
 					if (!item.equals(plugin.backpackItems.get(backpack))) {
@@ -160,7 +157,6 @@ public class PlayerListener implements Listener {
 						plugin.slowedPlayers.add(name);
 					}
 					plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
-						@Override
 						public void run() {
 							p.setWalkSpeed(Float.parseFloat(key.get(9)));
 						}
@@ -181,7 +177,6 @@ public class PlayerListener implements Listener {
 
 		final Inventory inv = p.getInventory();
 		plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-			@Override
 			public void run() {
 				final List<String> backpackList = new ArrayList<String>();
 				for (final String backpack : plugin.backpacks) {
@@ -219,7 +214,6 @@ public class PlayerListener implements Listener {
 					}
 					plugin.slowedPlayers.add(name);
 					plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
-						@Override
 						public void run() {
 							p.setWalkSpeed(walkSpeedMultiplier);
 						}

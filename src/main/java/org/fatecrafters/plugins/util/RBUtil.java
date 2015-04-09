@@ -22,7 +22,6 @@ public class RBUtil {
 
 	public static void destroyContents(final String name, final String backpack) {
 		plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-			@Override
 			public void run() {
 				if (plugin.isUsingMysql()) {
 					MysqlFunctions.delete(name, backpack);
@@ -64,6 +63,7 @@ public class RBUtil {
 		return i;
 	}
 
+	@SuppressWarnings("deprecation")
 	public static ItemStack getItemstackFromString(final String s) {
 		ItemStack item = null;
 		final String[] split = s.split(":");

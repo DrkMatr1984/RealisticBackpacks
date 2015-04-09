@@ -30,7 +30,6 @@ public class EntityListener implements Listener {
 			final int pLevel = p.getFoodLevel();
 			final Inventory inv = p.getInventory();
 			plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-				@Override
 				public void run() {
 					final List<String> backpackList = new ArrayList<String>();
 					for (final String backpack : plugin.backpacks) {
@@ -59,7 +58,6 @@ public class EntityListener implements Listener {
 							}
 						}
 						plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
-							@Override
 							public void run() {
 								e.setCancelled(true);
 								p.setFoodLevel(setlevel);

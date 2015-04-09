@@ -41,7 +41,6 @@ public class MysqlFunctions {
 
 	public static void createTables() {
 		plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-			@Override
 			public void run() {
 				try {
 					final Connection conn = DriverManager.getConnection(plugin.getUrl(), plugin.getUser(), plugin.getPass());
@@ -58,7 +57,6 @@ public class MysqlFunctions {
 
 	public static void addBackpackData(final String playerName, final String backpack, final Inventory inv) throws SQLException {
 		plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-			@Override
 			public void run() {
 				try {
 					final Connection conn = DriverManager.getConnection(plugin.getUrl(), plugin.getUser(), plugin.getPass());
@@ -106,7 +104,6 @@ public class MysqlFunctions {
 
 	public static void delete(final String playerName, final String backpack) {
 		plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-			@Override
 			public void run() {
 				try {
 					final Connection conn = DriverManager.getConnection(plugin.getUrl(), plugin.getUser(), plugin.getPass());

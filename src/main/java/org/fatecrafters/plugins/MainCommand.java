@@ -29,7 +29,6 @@ public class MainCommand implements CommandExecutor {
 		this.plugin = plugin;
 	}
 
-	@Override
 	@SuppressWarnings("deprecation")
 	public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
 		if (cmd.getName().equalsIgnoreCase("rb")) {
@@ -177,7 +176,6 @@ public class MainCommand implements CommandExecutor {
 						return false;
 					}
 					plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-						@Override
 						public void run() {
 							if (!MysqlFunctions.checkIfTableExists("rb_data")) {
 								MysqlFunctions.createTables();
